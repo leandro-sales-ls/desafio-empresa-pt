@@ -1,0 +1,12 @@
+#!/usr/bin/env php
+<?php
+require_once __DIR__ . '/../vendor/autoload.php';
+ 
+use Symfony\Component\Console\Application;
+use Console\App\Commands\UserCreateCommand;
+use Console\App\Commands\CreatePassword;
+ 
+$app = new Application();
+$app->add(new UserCreateCommand());
+$app->add(new CreatePassword());
+$app->run();
