@@ -28,3 +28,10 @@ php bin/console create Leandro Sales leandro@sales.com 23
 ```
 php bin/console create-pwd 1 Abc@132 Abc@132
 ```
+
+
+## Se tiver problemas com arquivo php não encontrado
+
+```
+composer dump-autoload
+```
