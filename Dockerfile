@@ -42,4 +42,8 @@ RUN pecl install -o -f redis \
 # Set working directory
 WORKDIR /var/www
 
+ADD import.sh /tmp/import.sh
+ADD table.sql /tmp/table.sql
+RUN /tmp/import.sh
+
 USER $user

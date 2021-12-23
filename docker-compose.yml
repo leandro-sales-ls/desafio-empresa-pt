@@ -1,6 +1,7 @@
 version: "3.8"
 services:
     php:
+        container_name: 'php'
         build:
             args:
                 user: teladoc
@@ -13,16 +14,19 @@ services:
         volumes:
         - ./:/var/www
     
-    database:
-        image: backoffice-db
-        ports:
-            - "3306:3036"
+    mysqlsrv:
+        container_name: 'mysqlsrv'
+        image: mysql:5.7
         environment:
-            MYSQL_ROOT_PASSWORD: RootPassword
-            MYSQL_DATABASE: Backoffice
-            MYSQL_USER: MainUser
-            MYSQL_PASSWORD: MainPassword
+            MYSQL_ROOT_PASSWORD: "root!"
+            MYSQL_DATABASE: "phprs"
+        ports:
+        - "3307:3306"
         volumes:
-        - db-volume:/var/lib/mysql
-volumes:
-    data:
+        - /home/renatogroffe/Desenvolvimento/Docker/Volumes/MySql:/var/lib/mysql
+        networks:
+        - mysql-compose-network
+
+networks: 
+  mysql-compose-network:
+    driver: bridge
