@@ -6,6 +6,8 @@ use App\Repositories\Account\AccountRepository;
 
 class AccountService
 {
+    private static $instance;
+
     public function getByID($id)
     {
         $account = new AccountRepository();
@@ -18,7 +20,7 @@ class AccountService
         return $account->select();
     }
 
-    public function create(array $param)
+    public function insert(array $param)
     {
         $account = new AccountRepository();
         return $account->insert($param);
@@ -28,5 +30,13 @@ class AccountService
     {
         $account = new AccountRepository();
         return $account->update($id, $param);
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance == null) {
+            self::$instance = new AccountService();
+        }
+        return self::$instance;
     }
 }

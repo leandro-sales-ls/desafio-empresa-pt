@@ -5,9 +5,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
-// use App\Services\Account\AccountService;
-use App\Repositories\Account\AccountRepository;
- 
+use App\Services\AccountService;
 class UserCreateCommand extends Command
 {
 
@@ -83,7 +81,7 @@ class UserCreateCommand extends Command
 
     public function create(array $param)
     {
-        return (new AccountRepository)->insert($param);
+        return AccountService::getInstance()->insert($param);
     }
 
 }

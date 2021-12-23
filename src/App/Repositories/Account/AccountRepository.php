@@ -6,6 +6,7 @@ use App\Models\Account;
 
 class AccountRepository 
 {
+    private static $instance;
 
     public function getByID($id)
     {
@@ -29,6 +30,14 @@ class AccountRepository
     {
         $account = new Account ();
         return $account->update($id, $info);
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance == null) {
+            self::$instance = new AccountRepository();
+        }
+        return self::$instance;
     }
 
 }

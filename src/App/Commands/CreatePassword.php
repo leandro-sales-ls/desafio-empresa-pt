@@ -6,7 +6,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use App\Services\AccountService;
-use App\Repositories\Account\AccountRepository;
  
 class CreatePassword extends Command
 {
@@ -43,7 +42,7 @@ class CreatePassword extends Command
     {
         $erros = [];
 
-        if (!(new AccountRepository)->getByID($input->getArgument('id'))) {
+        if (!AccountService::getInstance()->getByID($input->getArgument('id'))) {
             array_push($erros, 'Usuario não encontrado');
         }
 
@@ -66,7 +65,7 @@ class CreatePassword extends Command
 
     public function update($id, array $param)
     {
-        return (new AccountRepository)->update($id, $param);
+        return AccountService::getInstance()->update($id, $param);
     }
 
 }
