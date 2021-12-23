@@ -5,6 +5,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use App\Services\AccountService;
+use App\Repositories\Account\AccountRepository;
  
 class CreatePassword extends Command
 {
@@ -26,20 +28,22 @@ class CreatePassword extends Command
         if ($erros) {
             throw new \Exception(implode('; ',$erros));
         } else {
-            $return = password_hash($input->getArgument('password'), PASSWORD_BCRYPT, ['cost' => 10]);
+            $data = [
+                "password" => password_hash($input->getArgument('password'), PASSWORD_BCRYPT, ['cost' => 10]),
+            ];
+             if ($this->update($input->getArgument('id'), $data)) $return = 'Senha cadastrada.';
         }
 
         $output->writeln($return);
         
-        return Command::SUCCESS;
+        return $return;
     }
 
     public function validation(InputInterface $input)
     {
         $erros = [];
-        $ids = [1,3,5,9,35,10];
 
-        if (!in_array($input->getArgument('id'), $ids)) {
+        if (!(new AccountRepository)->getByID($input->getArgument('id'))) {
             array_push($erros, 'Usuario não encontrado');
         }
 
@@ -58,6 +62,11 @@ class CreatePassword extends Command
     {
         $regex = "/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{6,20}$/";
         return (bool)preg_match($regex, $pwd);
+    }
+
+    public function update($id, array $param)
+    {
+        return (new AccountRepository)->update($id, $param);
     }
 
 }

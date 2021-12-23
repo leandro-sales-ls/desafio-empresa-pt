@@ -5,9 +5,12 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+// use App\Services\Account\AccountService;
+use App\Repositories\Account\AccountRepository;
  
 class UserCreateCommand extends Command
 {
+
     protected function configure()
     {
         $this->setName('create')
@@ -27,18 +30,19 @@ class UserCreateCommand extends Command
         if ($erros) {
             throw new \Exception(implode('; ',$erros));
         } else {
-            $return = [
+            $data = [
                 "firstName" => $input->getArgument('firstName'),
                 "lastName"  => $input->getArgument('lastName'),
                 "email"     => $input->getArgument('email'),
                 "age"       => $input->getArgument('age'),
             ];
+            $return = $this->create($data);
             $return = json_encode($return);
         }
 
         $output->writeln($return);
         
-        return Command::SUCCESS;
+        return $return;
     }
 
     public function validation(InputInterface $input)
@@ -75,6 +79,11 @@ class UserCreateCommand extends Command
     {
         $regex = "/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/";
         return (bool)preg_match($regex, $email);
+    }
+
+    public function create(array $param)
+    {
+        return (new AccountRepository)->insert($param);
     }
 
 }
