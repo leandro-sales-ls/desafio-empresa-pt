@@ -1,4 +1,6 @@
-Criando um framework do zero sem usar bibliotecas. 
+# Implementação de uma aplicação CLI sem usar libs
+
+[Requisitos](https://github.com/leandro-sales-ls/desafio-empresa-pt/files/9882385/Desafio_PHP.pdf)
 
 ## Para levantar o container 
 ```
